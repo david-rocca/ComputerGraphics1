@@ -1,0 +1,307 @@
+
+ACM Transactions on Graphics (TOG)
+
+1. Article from newest issue (Vol. 37, Issue 1, January 2018)
+
+@article{Shu:2017:PLT:3151031.3095816,
+ author = {Shu, Zhixin and Hadap, Sunil and Shechtman, Eli and Sunkavalli, Kalyan and Paris, Sylvain and Samaras, Dimitris},
+ title = {Portrait Lighting Transfer Using a Mass Transport Approach},
+ journal = {ACM Trans. Graph.},
+ issue_date = {January 2018},
+ volume = {37},
+ number = {1},
+ month = oct,
+ year = {2017},
+ issn = {0730-0301},
+ pages = {2:1--2:15},
+ articleno = {2},
+ numpages = {15},
+ url = {http://doi.acm.org/10.1145/3095816},
+ doi = {10.1145/3095816},
+ acmid = {3095816},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Face relighting, histogram matching, mass transport},
+} 
+
+2. Article based on birthday 
+
+@article{DeRose:1993:FCA:151280.151290,
+ author = {DeRose, Tony D. and Goldman, Ronald N. and Hagen, Hans and Mann, Stephen},
+ title = {Functional Composition Algorithms via Blossoming},
+ journal = {ACM Trans. Graph.},
+ issue_date = {April 1993},
+ volume = {12},
+ number = {2},
+ month = apr,
+ year = {1993},
+ issn = {0730-0301},
+ pages = {113--135},
+ numpages = {23},
+ url = {http://doi.acm.org/10.1145/151280.151290},
+ doi = {10.1145/151280.151290},
+ acmid = {151290},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {B-splines, Be\'{}zier curves, computer-aided geometric design, free-form deformations, tensor-product surface patches, triangular Be\'{}zier surface patches},
+} 
+
+IEEE Transactions on Visualization and Computer Graphics (TVCG)
+
+1. Article from the newest issue
+
+@ARTICLE{7833028,
+author = {M. Krichenbauer and G. Yamamoto and T. Taketom and C. Sandor and H. Kato},
+journal = {IEEE Transactions on Visualization & Computer Graphics},
+title = {Augmented Reality versus Virtual Reality for 3D Object Manipulation},
+year = {2018},
+volume = {24},
+number = {2},
+pages = {1038-1048},
+keywords={Three-dimensional displays;Performance evaluation;Mice;Resists;Visualization;Training;Augmented reality},
+doi = {10.1109/TVCG.2017.2658570},
+url = {doi.ieeecomputersociety.org/10.1109/TVCG.2017.2658570},
+ISSN = {1077-2626},
+month={Feb.}
+}
+
+2. Article close to birthday (The lowest page number of this issue)
+
+@article{DeRose:1993:FCA:151280.151290,
+ author = {DeRose, Tony D. and Goldman, Ronald N. and Hagen, Hans and Mann, Stephen},
+ title = {Functional Composition Algorithms via Blossoming},
+ journal = {ACM Trans. Graph.},
+ issue_date = {April 1993},
+ volume = {12},
+ number = {2},
+ month = apr,
+ year = {1993},
+ issn = {0730-0301},
+ pages = {113--135},
+ numpages = {23},
+ url = {http://doi.acm.org/10.1145/151280.151290},
+ doi = {10.1145/151280.151290},
+ acmid = {151290},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {B-splines, Be\'{}zier curves, computer-aided geometric design, free-form deformations, tensor-product surface patches, triangular Be\'{}zier surface patches},
+} 
+
+IEEE Computer Graphics and Applications
+ 
+1. Newest Issue
+@ARTICLE{8255772, 
+author={N. Nilsson and T. Peck and G. Bruder and E. Hodgson and S. Serafin and E. Suma and M. Whitton and F. Steinicke}, 
+journal={IEEE Computer Graphics and Applications}, 
+title={15 Years of Research on Redirected Walking in Immersive Virtual Environments}, 
+year={2018}, 
+volume={PP}, 
+number={99}, 
+pages={1-1}, 
+keywords={Computer architecture;Legged locomotion;Object recognition;Safety;Space exploration;Virtual environments;artificial, augmented, and virtual realities;computer graphics;computing methodologies;interaction techniques;methodology and techniques;multimedia information systems information interfaces and rep;three-dimensional graphics and realism;virtual reality}, 
+doi={10.1109/MCG.2018.111125628}, 
+ISSN={0272-1716}, 
+month={},}
+
+2. Close to birthday
+
+@ARTICLE{204961, 
+author={J. F. Blinn}, 
+journal={IEEE Computer Graphics and Applications}, 
+title={NTSC: nice technology, super color}, 
+year={1993}, 
+volume={13}, 
+number={2}, 
+pages={17-23}, 
+keywords={colour television;decoding;encoding;NTSC;National Television System Committee;coders;color TV encoding scheme;decoders;Cameras;Computer graphics;Decoding;Encoding;Filtering;Fourier transforms;Frequency domain analysis;Image converters;Image resolution;TV}, 
+doi={10.1109/38.204961}, 
+ISSN={0272-1716}, 
+month={March},}
+
+ACM SIGGRAPH computer Graphics (Published as an ACM TOG)
+
+1. most recent
+@article{Gardner:2017:LPI:3130800.3130891,
+ author = {Gardner, Marc-Andr{\'e} and Sunkavalli, Kalyan and Yumer, Ersin and Shen, Xiaohui and Gambaretto, Emiliano and Gagn{\'e}, Christian and Lalonde, Jean-Fran\c{c}ois},
+ title = {Learning to Predict Indoor Illumination from a Single Image},
+ journal = {ACM Trans. Graph.},
+ issue_date = {November 2017},
+ volume = {36},
+ number = {6},
+ month = nov,
+ year = {2017},
+ issn = {0730-0301},
+ pages = {176:1--176:14},
+ articleno = {176},
+ numpages = {14},
+ url = {http://doi.acm.org/10.1145/3130800.3130891},
+ doi = {10.1145/3130800.3130891},
+ acmid = {3130891},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {deep learning, indoor illumination},
+} 
+
+
+2. Birthday
+
+@inproceedings{Sederberg:1993:SBI:166117.166118,
+ author = {Sederberg, Thomas W. and Gao, Peisheng and Wang, Guojin and Mu, Hong},
+ title = {2DD Shape Blending: An Intrinsic Solution to the Vertex Path Problem},
+ booktitle = {Proceedings of the 20th Annual Conference on Computer Graphics and Interactive Techniques},
+ series = {SIGGRAPH '93},
+ year = {1993},
+ isbn = {0-89791-601-8},
+ location = {Anaheim, CA},
+ pages = {15--18},
+ numpages = {4},
+ url = {http://doi.acm.org/10.1145/166117.166118},
+ doi = {10.1145/166117.166118},
+ acmid = {166118},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {character animation, numerical algorithms, shape blending},
+} 
+
+
+Computers and Graphics (C&G)
+
+1. Most recent
+
+@article{LEE20181,
+
+ title = "Heuristic misfit reduction: A programmable approach for 3D garment fit customization",
+
+ journal = "Computers & Graphics",
+
+ volume = "71",
+
+ pages = "1 - 13",
+
+ year = "2018",
+
+ issn = "0097-8493",
+
+ doi = "https://doi.org/10.1016/j.cag.2017.10.004",
+
+ url = "http://www.sciencedirect.com/science/article/pii/S009784931730170X",
+
+ author = "Wonseop Lee and Hyeong-Seok Ko",
+
+ keywords = "Clothing simulation,Fit customization, Pattern-making, Computer animation"
+
+}
+2. Birthday
+
+@article{ELLZEY1993121,
+
+ title = "Fast rotation of a 3D image about an arbitrary line",
+ 
+ journal = "Computers & Graphics",
+ 
+ volume = "17",
+
+ number = "2",
+
+ pages = "121 - 126",
+
+ year = "1993",
+ 
+ issn = "0097-8493",
+
+ doi = "https://doi.org/10.1016/0097-8493(93)90094-P",
+
+ url = "http://www.sciencedirect.com/science/article/pii/009784939390094P",
+
+ author = "Marion L. Ellzey and Vladik Kreinovich and Julie Peña"
+
+}
+
+
+Computer Graphics Forum (CGF)
+
+1. Newest
+
+@article {CGF:CGF12990,
+author = {Wang, Z. and Esturo, J. Martinez and Seidel, H.-P. and Weinkauf, T.},
+title = {Stream Line–Based Pattern Search in Flows},
+journal = {Computer Graphics Forum},
+volume = {36},
+number = {8},
+issn = {1467-8659},
+url = {http://dx.doi.org/10.1111/cgf.12990},
+doi = {10.1111/cgf.12990},
+pages = {7--18},
+keywords = {visualization, pattern search, stream lines, Categories and Subject Descriptors (according to ACM CCS): I.3.3 [Computer Graphics]: Picture/Image Generation–Line and curve generation},
+year = {2017},
+}
+
+
+2. Birthday
+
+@article {CGF:CGFCGF122_0095,
+author = {Van Campenhout, Jan M. and Lasure, Roeland},
+title = {PRIP – A Parallel Raster Image Processor},
+journal = {Computer Graphics Forum},
+volume = {12},
+number = {2},
+publisher = {Blackwell Science Ltd},
+issn = {1467-8659},
+url = {http://dx.doi.org/10.1111/1467-8659.1220095},
+doi = {10.1111/1467-8659.1220095},
+pages = {95--104},
+keywords = {Ring structure, strip parallelism, implicit parallelism, RIP},
+year = {1993},
+}
+
+Visual Computer
+
+1. Newest
+
+@Article{Namane2018,
+
+author="Namane, Rachid
+and Miguet, Serge
+and Oulebsir, Fatima Boumghar",
+
+title="A fast voxelization algorithm for trilinearly interpolated isosurfaces",
+
+journal="The Visual Computer",
+
+year="2018",
+
+month="Jan",
+
+day="01",
+
+volume="34",
+
+number="1",
+
+pages="5--20",
+
+
+issn="1432-2315",
+
+doi="10.1007/s00371-016-1306-0",
+
+url="https://doi.org/10.1007/s00371-016-1306-0"
+
+}
+
+
+
+2. Birthday (No Bib Text)
+
+author="Yamaguchi, F., Toshimitsu, K., Sato, H. et al.
+title="An adaptive, error-free computation based on the 4×4 determinant method"
+journal="The Visual Computer"
+year="1993"
+month="april"
+volume="9"
+number="4"
+pages="173-181"
+issn="1432-2315
+doi="https://doi.org/10.1007/BF01901722""
+
+
