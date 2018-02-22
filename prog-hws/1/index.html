@@ -1,0 +1,607 @@
+
+<html>
+    <header>
+        <title>Prog. HW 1</title>
+        <style>
+            html {
+                background-color: lightgray
+            }
+            #canvas {
+                border: 1px solid black;
+                float: left;
+                margin-right: 25px
+                
+            }
+
+            #clearAllDiv {
+                margin-top: 25px
+            }
+
+            #content {
+                margin: 25px, 25px, 25px, 25px;
+                padding-left: 25px;
+            }
+
+        </style>
+        <script src="jscolor.min.js"></script>
+    </header>
+    <!-- Because I am lazy and do not want to add jquery to the project -->
+    <body onload="initCanvas();">
+        <canvas id="canvas" width="800" height="600">
+        </canvas>
+        <div id="content">
+            <div>
+                    <h2 id="currentlyDrawing">Currently Drawing: Points</h2>
+                    <h3 id="mousePosition">Current Mouse Position:</h3>
+                    <button id="drawPoint">Draw Point</button>
+                    <button id="drawLine">Draw Line</button>
+                    <button id="drawEllipse">Draw Ellipse</button>
+                    <button id="drawCircle">Draw Circle</button>
+                    <button id="drawRect">Draw Rectangle</button>
+                    <button id="drawPoly">Draw Poly</button>
+                    <button id="drawOpenPoly">Draw Poly Line</button>
+                </div>
+                <div id="clearAllDiv">
+                    <button id="clearAll">Clear Canvas</button>
+                </div>
+                <div>
+                    <h1 id="polyNote" style="visibility:hidden; color:#ff0000">Double Click when creating the last point to close your polygon</h1>
+                </div>
+                <div>
+                    <h3>Use the slider to change the Thickness of the lines being drawn</h3>
+                    <h4 id="currentThickness">Current Thickness: 3</h4>
+                    <input type="range" min="3" max="25" value="3" class="slider" id="myRange">
+                </div>
+                <div>
+                    
+                    <h3>Use the picker below to change the color of the lines being drawn</h3>
+                    <input class="jscolor {onFineChange:'update(this)'}" value="000000">
+                </div>
+        </div>
+        
+        
+        
+    </body>
+
+    
+    <script>
+
+        //Canvas Settings
+        var myCanvas = document.getElementById("canvas")
+        var myCanvasContext = myCanvas.getContext("2d")
+        var canvasBoundingBox
+        var control = "point"
+
+
+        slider = document.getElementById("myRange")
+        thicknessValue = document.getElementById("currentThickness")
+
+
+        var thickness = 3
+        var color = "#000000"
+        slider.oninput = function() {
+            thickness = this.value;
+            thicknessValue.innerHTML = "Current Thickness: " + thickness
+        }
+
+        function update(picker) {
+            color = picker.toHEXString()
+        }
+        // Drawng settings - Thickness, Color, ECT.
+        
+
+        //Current mouse position
+        var x, y
+
+        //For Drawing line, save starting x and y
+        var startingx, startingy
+        
+        var isDrawingLine, isDrawingEllipse, isDrawingCircle, isDrawingRectangle, isDrawingPolygon, isDrawingOpenPolygon = false
+        var savedLines = []
+        var savedPoints = []
+        var savedEllipses = []
+        var savedCircles = []
+        var savedRectangles = []
+        var savedPolygons = []
+        var savedOpenPolygon = []
+
+        var tempPolygonDataClosed = []
+        function initCanvas() {
+            //Get bounding box
+            // This is needed to get mouse location
+            canvasBoundingBox = myCanvas.getBoundingClientRect();
+        }
+
+        // While we are not allowed to use APIs in this class. Professor stated that we could use a draw rect of 1x1 to do our pixel drawing.
+        function drawPoint(x, y) {
+            drawPoint(x,y, color, thickness)
+        }
+
+        function drawPoint(x, y, currentColor, currentThickness) { 
+            myCanvasContext.fillStyle = "" + currentColor
+            myCanvasContext.fillRect(x, y, currentThickness, currentThickness)
+        }
+
+        //Add Event listeners
+        //Click Event
+        myCanvas.addEventListener('click', (e) => {
+            x = (e.clientX - canvasBoundingBox.left) - (thickness * .5)
+            y = (e.clientY - canvasBoundingBox.top) - (thickness * .5)
+            if (control === "point") {
+                drawPoint(x, y, color, thickness)
+                savedPoints.push(new Point(x, y, color, thickness))
+            } else if (control === "line") {
+                if (isDrawingLine) {
+                    savedLines.push(new Line(startingx, startingy, x, y, color, thickness))
+                }
+                if (isDrawingLine) {
+                    isDrawingLine = false
+                } else {
+                    isDrawingLine = true
+                }
+                startingx = x
+                startingy = y
+            } else if (control == "ellipse") {
+                if (isDrawingEllipse) {
+                    savedEllipses.push(new Ellipse(startingx, startingy, x, y, color, thickness))
+                }
+                if (isDrawingEllipse) {
+                    isDrawingEllipse = false
+                } else {
+                    isDrawingEllipse = true
+                }
+                startingx = x
+                startingy = y
+            } else if (control == "circle") {
+                if (isDrawingCircle) {
+                    savedCircles.push(new Circle(startingx, startingy, x, y, color, thickness))
+                }
+                if (isDrawingCircle) {
+                    isDrawingCircle = false
+                } else {
+                    isDrawingCircle = true
+                }
+                startingx = x
+                startingy = y
+            } else if (control == "rectangle") {
+                if (isDrawingRectangle) {
+                    savedCircles.push(new Rectangle(startingx, startingy, x, y, color, thickness))
+                }
+                if (isDrawingRectangle) {
+                    isDrawingRectangle = false
+                } else {
+                    isDrawingRectangle = true
+                }
+                startingx = x
+                startingy = y
+            } else if (control == "polygon") {
+                if (!isDrawingPolygon) {
+                    startingx = x
+                    startingy = y
+                }
+                isDrawingPolygon = true
+                
+                if (tempPolygonDataClosed.length > 2) {
+                    tempPolygonDataClosed.pop()
+                    tempPolygonDataClosed.push(new Line(startingx, startingy, x, y, color, thickness))
+                    buildClosedPoly()
+                } else if (tempPolygonDataClosed.length == 2){
+                    tempPolygonDataClosed.push(new Line(startingx, startingy, x, y, color, thickness))
+                    buildClosedPoly()
+                } else {
+                    tempPolygonDataClosed.push(new Line(startingx, startingy, x, y, color, thickness))
+                }
+                
+                startingx = x
+                startingy = y
+            } else if (control == "openPolygon") {
+                if (!isDrawingOpenPolygon) {
+                    startingx = x
+                    startingy = y
+                }
+                isDrawingOpenPolygon = true
+                
+                if (tempPolygonDataClosed.length > 2) {
+                    tempPolygonDataClosed.push(new Line(startingx, startingy, x, y, color, thickness)) 
+                } else {
+                    tempPolygonDataClosed.push(new Line(startingx, startingy, x, y, color, thickness))
+                }
+                
+                startingx = x
+                startingy = y
+            }
+
+        })
+
+
+        //Might not need this at the current moment
+        myCanvas.addEventListener('mousemove', (e) => {
+            x = (e.clientX - canvasBoundingBox.left) - (thickness * .5)
+            y = (e.clientY - canvasBoundingBox.top) - (thickness * .5)
+            document.getElementById("mousePosition").innerHTML = "Current Mouse Position. X: " + x + " Y: " + y
+            if (isDrawingLine) {
+                clearAndRedraw()
+                drawLine(startingx, startingy, x, y, color, thickness)
+            } else if (isDrawingEllipse) {
+                clearAndRedraw()
+                drawEllipse(startingx, startingy, Math.abs(x - startingx), Math.abs(y - startingy), color, thickness)
+            } else if (isDrawingCircle) {
+                clearAndRedraw()
+                var rad = Math.sqrt((startingx - x)*(startingx - x) + (startingy - y) * (startingy - y))
+                drawEllipse(startingx, startingy, rad, rad, color, thickness)
+            } else if (isDrawingRectangle) {
+                clearAndRedraw()
+                drawRectangle(x, y, startingx, startingy, color, thickness)
+            } else if (isDrawingPolygon) {
+                clearAndRedraw()
+                drawClosedPoly(startingx, startingy, x, y)
+            } else if (isDrawingOpenPolygon) {
+                clearAndRedraw()
+                drawClosedPoly(startingx, startingy, x, y)
+            }
+        })
+
+        myCanvas.addEventListener('dblclick', (e) => {
+            if (isDrawingPolygon) {
+                clearAndRedraw()
+                for (var i = 0; i < tempPolygonDataClosed.length; i ++) {
+                    tempPolygonDataClosed[i].draw()
+                }
+                isDrawingPolygon = false
+                savedPolygons.push(new Polygon(tempPolygonDataClosed))
+                tempPolygonDataClosed =[]
+                
+            } else if (isDrawingOpenPolygon) {
+                clearAndRedraw()
+                for (var i = 0; i < tempPolygonDataClosed.length; i ++) {
+                    tempPolygonDataClosed[i].draw()
+                }
+                isDrawingOpenPolygon = false
+                savedOpenPolygon.push(new openPolygon(tempPolygonDataClosed))
+                tempPolygonDataClosed =[]
+                
+            }
+        })
+
+
+        //Draw Polygon
+        function drawClosedPoly(x1, y1, x2, y2) {
+            console.log("test")
+            clearAndRedraw()
+            for (var i = 0; i < tempPolygonDataClosed.length; i ++) {
+                tempPolygonDataClosed[i].draw()
+            }
+            drawLine(x1, y1, x2, y2, color, thickness)
+        }
+
+        function buildClosedPoly () {
+            clearAndRedraw()
+            for (var i = 0; i < tempPolygonDataClosed.length; i ++) {
+                tempPolygonDataClosed[i].draw()
+            }
+            drawLine(tempPolygonDataClosed[tempPolygonDataClosed.length-1].x1, tempPolygonDataClosed[tempPolygonDataClosed.length-1].y1, tempPolygonDataClosed[0].x1, tempPolygonDataClosed[0].y1, color, thickness)
+            tempPolygonDataClosed.push(new Line(tempPolygonDataClosed[tempPolygonDataClosed.length-1].x2, tempPolygonDataClosed[tempPolygonDataClosed.length-1].y2, tempPolygonDataClosed[0].x1, tempPolygonDataClosed[0].y1, color, thickness))
+        }
+
+        
+        //Draw Ellipse
+        //heavly borrowed from psudocode located at reference below  under ellipse
+
+        function drawEllipse(ecx, ecy, rx, ry, currentColor, currentThickness) {
+            var radiusXsquared = rx * rx
+            var raidusYsquared = ry * ry
+            var x = 0
+            var y = ry
+            var px = 0
+            var py = 2 * radiusXsquared * y
+
+            //Draw part 1
+            drawPoint(ecx + x, ecy + y, currentColor, currentThickness)
+            drawPoint(ecx - x, ecy + y, currentColor, currentThickness)
+            drawPoint(ecx + x, ecy - y, currentColor, currentThickness)
+            drawPoint(ecx - x, ecy - y, currentColor, currentThickness)
+
+            p = raidusYsquared - (radiusXsquared * ry) + (0.25 * radiusXsquared)
+            while (px < py) {
+                x = x + 1
+                px = px + 2 * raidusYsquared
+                if (p < 0) {
+                    p = p + raidusYsquared + px
+                } else {
+                    y  = y -1 
+                    py = py - 2 * radiusXsquared
+                    p = p + raidusYsquared + px - py
+                }
+                
+                drawPoint(ecx + x, ecy + y, currentColor, currentThickness)
+                drawPoint(ecx - x, ecy + y, currentColor, currentThickness)
+                drawPoint(ecx + x, ecy - y, currentColor, currentThickness)
+                drawPoint(ecx - x, ecy - y, currentColor, currentThickness)
+            }
+            p = raidusYsquared * (x + .5) * (x + .5) + radiusXsquared * (y-1) * (y-1) - radiusXsquared * raidusYsquared
+            while (y > 0) {
+                y = y - 1
+                py = py -2 * radiusXsquared
+                if (p > 0) {
+                    p = p + radiusXsquared - py
+                }
+                else {
+                    x = x + 1
+                    px = px + 2 * raidusYsquared
+                    p = p + radiusXsquared - py + px
+                }
+                drawPoint(ecx + x, ecy + y, currentColor, currentThickness)
+                drawPoint(ecx - x, ecy + y, currentColor, currentThickness)
+                drawPoint(ecx + x, ecy - y, currentColor, currentThickness)
+                drawPoint(ecx - x, ecy - y, currentColor, currentThickness)
+            }
+        }
+        
+        function drawRectangle (x1, y1, x2, y2, currentColor, currentThickness) {
+            drawLine(x1, y1, x1, y2, currentColor, currentThickness);
+            drawLine(x1, y1, x2, y1, currentColor, currentThickness);
+            drawLine(x1, y2, x2, y2, currentColor, currentThickness);
+            drawLine(x2, y1, x2, y2, currentColor, currentThickness);
+        }
+
+        function drawLine (x1, y1, x2, y2) {
+            drawLine(x1, y1, x2, y2, color, thickness)
+        }
+
+        function drawLine (x1,y1,x2,y2, currentColor, currentThickness) {
+            var currentx, currenty
+            currentx = x1
+            currenty = y1
+            
+            var deltax, deltay
+
+            deltax = Math.abs(x2 - x1)
+            deltay = Math.abs(y2 - y1)
+
+            //As mentioned in class we need use the sign
+            var signx
+            if (x1 < x2) {
+                signx = 1
+            } else {
+                signx = -1
+            }
+            var signy
+            if (y1 < y2) {
+                signy = 1
+            } else {
+                signy = -1
+            }
+            
+
+            var distance = deltax - deltay
+            var newDistance
+            while (1) {
+                drawPoint(currentx, currenty, currentColor, currentThickness)
+                if (currentx == x2 && currenty == y2) {
+                    break
+                }
+                newDistance = distance * 2
+                if (newDistance > -1 * deltay) {
+                        distance = distance - deltay
+                        currentx = currentx + signx
+                }
+                if (newDistance < deltax) {
+                    distance = distance + deltax
+                    currenty = currenty + signy
+                }
+
+            } 
+
+        }
+
+        //Helpers
+        function clearAndRedraw() {
+            myCanvasContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            for (var i = 0; i < savedLines.length; i ++) {
+                savedLines[i].draw()
+            }
+            for (var i = 0; i < savedPoints.length; i ++) {
+                savedPoints[i].draw()
+            }
+            for (var i = 0; i < savedEllipses.length; i ++) {
+                savedEllipses[i].draw()
+            }
+            for (var i = 0; i < savedCircles.length; i ++) {
+                savedCircles[i].draw()
+            }
+            for (var i = 0; i < savedRectangles.length; i ++) {
+                savedRectangles[i].draw()
+            }
+            for (var i = 0; i < savedPolygons.length; i ++) {
+                savedPolygons[i].draw()
+            }
+            for (var i = 0; i < savedOpenPolygon.length; i ++) {
+                savedOpenPolygon[i].draw()
+            }
+        }
+        
+
+
+
+        /*
+            Boring Button Listners
+        */
+        var drawPointBtn = document.getElementById("drawPoint")
+        var drawLineBtn = document.getElementById("drawLine")
+        var drawEllipseBtn = document.getElementById("drawEllipse")
+        var drawCircleBtn = document.getElementById("drawCircle")
+        var drawRectangleBtn = document.getElementById("drawRect")
+        var drawPolygon = document.getElementById("drawPoly")
+        var drawOpenPoly = document.getElementById("drawOpenPoly")
+        var clearAll = document.getElementById("clearAll")
+
+        clearAll.onclick = () => {
+            savedCircles = []
+            savedEllipses = []
+            savedLines = []
+            savedPoints = []
+            clearAndRedraw()
+        }
+
+        drawPointBtn.onclick = () => {
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Points"
+            document.getElementById("polyNote").style.visibility = "hidden"
+            control = "point"
+        }
+
+        drawLineBtn.onclick = () => {
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Lines"
+            document.getElementById("polyNote").style.visibility = "hidden"
+            control = "line"
+        }
+
+        drawEllipseBtn.onclick = () => {
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Ellipses"
+            document.getElementById("polyNote").style.visibility = "hidden"
+            control = "ellipse"
+        }
+
+        drawCircleBtn.onclick = () => {
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Circles"
+            document.getElementById("polyNote").style.visibility = "hidden"
+            control = "circle"
+        }
+
+            drawRectangleBtn.onclick = () => {
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Rectangles"
+            document.getElementById("polyNote").style.visibility = "hidden"
+            control = "rectangle"
+        }
+
+        drawPolygon.onclick = () => {
+            tempPolygonDataClosed = []
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Closed Polygon"
+            document.getElementById("polyNote").style.visibility = "visible"
+            control = "polygon"
+        }
+
+            drawOpenPoly.onclick = () => {
+            tempPolygonDataClosed = []
+            document.getElementById("currentlyDrawing").innerHTML = "Currently Drawing: Open Polygon"
+            document.getElementById("polyNote").style.visibility = "visible"
+            control = "openPolygon"
+        }
+
+
+
+
+
+        /*
+            Helper Classes 
+        */
+
+        
+        function Line (x1, y1, x2, y2, currentColor, currentThickness) {
+            this.x1 = x1
+            this.y1 = y1
+            this.y2 = y2
+            this.x2 = x2
+            this.color = currentColor
+            this.thickness = currentThickness
+        }
+        
+        //Would not working using arrow notation for functions
+        Line.prototype.draw = function () {
+            drawLine(this.x1, this.y1, this.x2, this.y2, this.color, this.thickness)
+        }
+
+
+        function Point (x, y, currentColor, currentThickness) {
+            this.x = x
+            this.y = y
+            this.currentColor = currentColor
+            this.currentThickness =  currentThickness
+        }
+            
+        Point.prototype.draw = function () {
+            drawPoint(this.x, this.y, this.currentColor, this.currentThickness)
+        }
+
+
+        function Ellipse (x1, y1, x2, y2 , currentColor, currentThickness) {
+            this.x1 = x1
+            this.y1 = y1
+            this.y2 = y2
+            this.x2 = x2
+            this.currentColor = currentColor
+            this.currentThickness =  currentThickness
+        }
+        
+        //Would not working using arrow notation for functions
+        Ellipse.prototype.draw = function () {
+            drawEllipse(this.x1, this.y1, Math.abs(this.x2 - this.x1), Math.abs(this.y2 - this.y1), this.currentColor, this.currentThickness)
+        }
+
+        function Circle (x1, y1, x2, y2, currentColor, currentThickness) {
+            this.x1 = x1
+            this.y1 = y1
+            this.y2 = y2
+            this.x2 = x2
+            this.currentColor = currentColor
+            this.currentThickness =  currentThickness
+        }
+        
+        //Would not working using arrow notation for functions
+        Circle.prototype.draw = function () {
+            var rad = Math.sqrt((this.x1 - this.x2)*(this.x1 - this.x2) + (this.y1 - this.y2) * (this.y1 - this.y2))
+            drawEllipse(this.x1, this.y1, rad, rad, this.currentColor, this.currentThickness)
+        }
+
+        function Rectangle (x1, y1, x2, y2, currentColor, currentThickness) {
+            this.x1 = x1
+            this.y1 = y1
+            this.y2 = y2
+            this.x2 = x2
+            this.currentColor = currentColor
+            this.currentThickness =  currentThickness
+        }
+        
+        //Would not working using arrow notation for functions
+        Rectangle.prototype.draw = function () {
+            drawRectangle(this.x2, this.y2, this.x1, this.y1, this.currentColor, this.currentThickness)
+        }
+
+        function Polygon (lines) {
+            this.lines = lines
+        }
+        
+        //Would not working using arrow notation for functions
+        Polygon.prototype.draw = function () {
+            for (var i = 0; i < this.lines.length; i++) {
+                this.lines[i].draw()
+            }
+        }
+
+        function openPolygon (lines) {
+            this.lines = lines
+        }
+        
+        //Would not working using arrow notation for functions
+        openPolygon.prototype.draw = function () {
+            for (var i = 0; i < this.lines.length; i++) {
+                this.lines[i].draw()
+            }
+        }
+
+
+
+
+
+    </script>
+</html>
+    
+    <!-- References
+        JSColor: http://jscolor.com/examples/
+        HTML5 Canvas w3 Schools: https://www.w3schools.com/html/html5_canvas.asp
+        Mouse listners: https://stackoverflow.com/questions/7731009/mouselistener-and-html5-canvas-object
+        Mouse Issues with Canvas: https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas
+        CSS: https://www.w3schools.com/css/default.asp
+        LineMidpoint Algorithm: https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+        Ellipse: http://www.eazynotes.com/notes/computer-graphics/algorithms/mid-point-elliplse-algorithm.pdf
+    
+    -->
